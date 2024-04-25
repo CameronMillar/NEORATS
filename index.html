@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEORATS</title>
+<style>    
+    body {
+        background-color: #0A0A0A;
+        margin: 0;
+        padding: 0;
+    }
+    .title {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 32px;
+        font-family: Arial, sans-serif; 
+        transition: font-size 0.5s;
+    }
+    .buttons {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .u-button {
+        background-color: white;
+        color: black;
+        border: none;
+        padding: 15px 30px;
+        font-size: 18px;
+        cursor: pointer;
+        margin: 0 10px;
+        border-radius: 8px;
+    }
+    .u-button:hover {
+        background-color: gray;
+    }
+    .u-button:active {
+        background-color: gray;
+        transform: translateY(4px);
+    }
+    #gif {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+</head>
+<body>
+<div class="title">NEORATS</div>
+<div class="buttons">
+    <button class="u-button" id="cheeseButton">Cheese</button>
+    <button class="u-button" id="playButton">Swarm</button>
+    <button class="u-button" id="hordeButton">Horde</button>
+</div>
+<div id="gif-container"></div>
+<img src="rat-spinning.gif" alt="Your GIF" id="gif" style="display: none;">
+
+<script>
+    document.getElementById('playButton').addEventListener('click', function() {
+        // Fade out all buttons
+        var buttons = document.querySelectorAll('.u-button');
+        buttons.forEach(function(button) {
+            button.style.opacity = 0;
+        });
+    
+        // Select the GIF 
+        var gif = document.getElementById('gif');
+        gif.style.display = 'block';
+
+        // Function to duplicate GIF after 5 seconds
+        function duplicateGIF() {
+        
+            var newGIF = document.createElement('img');
+            newGIF.src = gif.src; 
+            newGIF.style.width = gif.width; 
+            newGIF.style.height = gif.height; 
+            newGIF.style.margin = '5px'; 
+            newGIF.style.position = 'absolute'; 
+            newGIF.style.left = Math.random() * (window.innerWidth - gif.width) + 'px'; 
+            newGIF.style.top = Math.random() * (window.innerHeight - gif.height) + 'px'; 
+
+        
+            document.getElementById('gif-container').appendChild(newGIF);
+        }
+        var intervalId;
+        // Call duplicateGIF function after half a second
+        intervalId = setInterval(duplicateGIF, 500);
+        // Create a revert button
+        var backButton = document.createElement('button');
+        backButton.textContent = 'Back';
+        backButton.style.position = 'fixed';
+        backButton.style.bottom = '20px';
+        backButton.style.right = '20px';
+        backButton.textContent = 'Back';
+        backButton.classList.add('u-button');
+        document.body.appendChild(backButton);
+
+        //  revert changes
+        backButton.addEventListener('click', function() {
+            // Revert opacity of all buttons
+            buttons.forEach(function(button) {
+                button.style.opacity = 1;
+            });
+            clearInterval(intervalId);
+            gif.style.display = 'none';
+            var gifContainer = document.getElementById('gif-container')
+            while (gifContainer.firstChild) {
+                gifContainer.removeChild(gifContainer.firstChild);
+            }
+            document.body.removeChild(backButton);
+        });
+    });
+
+    document.getElementById('cheeseButton').addEventListener('click', function() {
+        window.location.href = 'Cheese.html';
+    });
+
+    document.getElementById('hordeButton').addEventListener('click', function() {
+        window.location.href = 'Horde.html';
+    });
+</script>
+</body>
+</html>
